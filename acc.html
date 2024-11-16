@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: url('https://www.cryptocompare.com/media/1964121/bitcoin.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            text-align: center;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab:hover {
+            background-color: #0056b3;
+        }
+        .tab-content {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            background: white;
+        }
+        .info-box {
+            display: inline-block;
+            width: calc(33.33% - 10px);
+            background-color: yellow;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+            width: 100%;
+            color: white;
+        }
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+        .transaction-history {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .transaction-history th, .transaction-history td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .transaction-history th {
+            background-color: #007BFF;
+            color: white;
+        }
+        .plans {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .plan {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            flex: 0 0 calc(48% - 10px);
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+        .plan:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .plan img {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+        .plan h3 {
+            margin: 0 0 10px;
+        }
+        .plan p {
+            margin: 5px 0;
+        }
+        .plan button {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Dashboard</h2>
+        <div class="tabs">
+            <div class="tab" onclick="showTab('account')">Account</div>
+            <div class="tab" onclick="showTab('deposit')">Deposit</div>
+            <div class="tab" onclick="showTab('withdraw')">Withdraw</div>
+            <div class="tab" onclick="showTab('history')">Transaction History</div>
+        </div>
+        
+        <div id="tab-content" class="tab-content">
+            <div id="account" class="tab-item">
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="info-box">
+                        <h4>Account Balance</h4>
+                        <p>$<span id="accountBalance">0</span></p>
+                    </div>
+                    <div class="info-box">
+                        <h4>Total Deposits</h4>
+                        <p>$<span id="totalDeposits">0</span></p>
+                    </div>
+                    <div class="info-box">
+                        <h4>Total Withdrawals</h4>
+                        <p>$<span id="totalWithdrawals">0</span></p>
+                    </div>
+                </div>
+                <div id="statusMessage" class="status"></div>
+
+                <h3>Investment Plans</h3>
+                <div class="plans">
+                    <div class="plan">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                        <h3>Basic</h3>
+                        <p>Investment: $10</p>
+                        <p>Daily Return: $0.50</p>
+                        <p>Duration: 30 Days</p>
+                        <button onclick="invest(10, 0.5)">Invest</button>
+                    </div>
+                    <div class="plan">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                        <h3>Silver</h3>
+                        <p>Investment: $25</p>
+                        <p>Daily Return: $1.20</p>
+                        <p>Duration: 30 Days</p>
+                        <button onclick="invest(25, 1.2)">Invest</button>
+                    </div>
+                    <div class="plan">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                        <h3>Gold</h3>
+                        <p>Investment: $40</p>
+                        <p>Daily Return: $2.80</p>
+                        <p>Duration: 30 Days</p>
+                        <button onclick="invest(40, 2.8)">Invest</button>
+                    </div>
+                    <div class="plan">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                        <h3>Pro Gold</h3>
+                        <p>Investment: $65</p>
+                        <p>Daily Return: $4.50</p>
+                        <p>Duration: 30 Days</p>
+                        <button onclick="invest(65, 4.5)">Invest</button>
+                    </div>
+                </div>
+            </div>
+            <div id="deposit" class="tab-item" style="display: none;">
+                <h3>Deposit</h3>
+                <input type="text" id="depositName" placeholder="Your Name" required>
+                <input type="text" id="depositPhone" placeholder="Phone/Binance ID" required>
+                <input type="number" id="depositAmount" placeholder="Amount to Deposit" required>
+                <button id="depositButton" style="background-color: #28a745;">Deposit</button>
+                <div id="depositStatus" class="status"></div>
+            </div>
+            <div id="withdraw" class="tab-item" style="display: none;">
+                <h3>Withdraw</h3>
+                <input type="text" id="withdrawName" placeholder="Your Name" required>
+                <input type="text" id="withdrawPhone" placeholder="Phone/Binance ID" required>
+                <input type="number" id="withdrawAmount" placeholder="Amount to Withdraw" required>
+                <button id="withdrawButton" style="background-color: #dc3545;">Withdraw</button>
+                <div id="withdrawStatus" class="status"></div>
+            </div>
+            <div id="history" class="tab-item" style="display: none;">
+                <h3>Transaction History</h3>
+                <table class="transaction-history">
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date/Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionHistory">
+                        <!-- Transaction history will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(tabName).style.display = 'block';
+        }
+
+        // Deposit Functionality
+        document.getElementById('depositButton').addEventListener('click', function() {
+            const name = document.getElementById('depositName').value;
+            const phone = document.getElementById('depositPhone').value;
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+
+            if (name && phone && amount > 0) {
+                document.getElementById('depositStatus').textContent = `Deposit of $${amount.toFixed(2)} by ${name} has been processed.`;
+                addTransaction(name, amount, 'Deposit', 'Pending');
+                updateAccountBalances(amount, 0);
+            } else {
+                alert("Please fill in all fields correctly.");
+            }
+        });
+
+        // Withdraw Functionality
+        document.getElementById('withdrawButton').addEventListener('click', function() {
+            const name = document.getElementById('withdrawName').value;
+            const phone = document.getElementById('withdrawPhone').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const fee = amount * 0.08;
+            const totalWithdrawal = amount - fee;
+
+            if (name && phone && amount >= 2 && totalWithdrawal > 0) {
+                document.getElementById('withdrawStatus').textContent = `Withdrawal of $${totalWithdrawal.toFixed(2)} by ${name} is pending approval.`;
+                addTransaction(name, totalWithdrawal, 'Withdrawal', 'Pending');
+                updateAccountBalances(0, totalWithdrawal);
+            } else {
+                alert("Please ensure the amount is at least $2 and fill in all fields correctly.");
+            }
+        });
+
+        // Function to update account balances
+        function updateAccountBalances(deposit, withdrawal) {
+            const totalDeposits = parseFloat(document.getElementById('totalDeposits').textContent) + deposit;
+            document.getElementById('totalDeposits').textContent = totalDeposits.toFixed(2);
+            const totalWithdrawals = parseFloat(document.getElementById('totalWithdrawals').textContent) + withdrawal;
+            document.getElementById('totalWithdrawals').textContent = totalWithdrawals.toFixed(2);
+            const accountBalance = parseFloat(document.getElementById('accountBalance').textContent) + deposit - withdrawal;
+            document.getElementById('accountBalance').textContent = accountBalance.toFixed(2);
+        }
+
+        // Function to add transaction to history
+        function addTransaction(from, amount, type, status) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${from}</td><td>$${amount.toFixed(2)}</td><td>${status}</td><td>${new Date().toLocaleString()}</td>`;
+            document.getElementById('transactionHistory').appendChild(row);
+        }
+
+        // Investment Functionality
+        function invest(amount, dailyReturn) {
+            const currentBalance = parseFloat(document.getElementById('accountBalance').textContent);
+            if (currentBalance >= amount) {
+                const name = "User"; // Replace with dynamic user name in a real application
+                addTransaction(name, amount, 'Investment', 'Approved');
+                updateAccountBalances(-amount, 0);
+                alert(`Invested $${amount}. Daily return: $${dailyReturn} for 30 days.`);
+            } else {
+                alert("Insufficient balance for this investment.");
+            }
+        }
+    </script>
+</body>
+</html>
